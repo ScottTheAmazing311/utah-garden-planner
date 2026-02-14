@@ -9,9 +9,6 @@ const statValue = { fontFamily: "DM Sans", fontSize: 15, color: "#2C2C2C", fontW
 export default function PlantDetail({ plant, onClose, onAdd, onRemove, isInGarden }) {
   if (!plant) return null;
 
-  // Generate image URL from Unsplash based on plant name
-  const imageUrl = `https://source.unsplash.com/600x400/?${encodeURIComponent(plant.botanical + ' plant')}`;
-
   return (
     <div onClick={onClose} style={{
       position: "fixed", inset: 0, background: "rgba(247, 245, 240, 0.7)", backdropFilter: "blur(12px)",
@@ -25,50 +22,87 @@ export default function PlantDetail({ plant, onClose, onAdd, onRemove, isInGarde
         boxShadow: "0 8px 32px rgba(0,0,0,0.12)"
       }}>
 
-        {/* Plant Image Header */}
-        <div className="detail-image-header" style={{ position: "relative", width: "100%", height: 280, overflow: "hidden", borderRadius: "16px 16px 0 0" }}>
-          <img
-            src={imageUrl}
-            alt={plant.name}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center"
-            }}
-            onError={(e) => {
-              // Fallback gradient if image fails to load
-              e.target.style.display = "none";
-              e.target.parentElement.style.background = `linear-gradient(135deg, ${plant.color}44 0%, ${plant.color}88 100%)`;
-            }}
-          />
+        {/* Plant Image Header with Gradient */}
+        <div className="detail-image-header" style={{
+          position: "relative",
+          width: "100%",
+          height: 280,
+          overflow: "hidden",
+          borderRadius: "16px 16px 0 0",
+          background: `linear-gradient(135deg, ${plant.color}33 0%, ${plant.color}66 50%, ${plant.color}99 100%)`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}>
+          {/* Large decorative emoji */}
+          <div style={{
+            fontSize: 180,
+            opacity: 0.15,
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%) rotate(-15deg)",
+            userSelect: "none",
+            pointerEvents: "none"
+          }}>
+            {CATEGORY_ICONS[plant.category] || "🌸"}
+          </div>
+
+          {/* Overlay content */}
           <div style={{
             position: "absolute",
             bottom: 0,
             left: 0,
             right: 0,
-            background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)",
-            padding: "40px 24px 20px"
+            background: "linear-gradient(to top, rgba(0,0,0,0.6), transparent)",
+            padding: "60px 24px 20px"
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <div style={{ fontSize: 48, lineHeight: 1, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))" }}>
+              <div style={{ fontSize: 52, lineHeight: 1, filter: "drop-shadow(0 3px 6px rgba(0,0,0,0.4))" }}>
                 {CATEGORY_ICONS[plant.category] || "🌸"}
               </div>
               <div>
-                <h2 style={{ fontFamily: "DM Serif Display", fontSize: 28, color: "#fff", margin: 0, textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>{plant.name}</h2>
-                <p style={{ fontFamily: "DM Sans", fontSize: 13, color: "#f0f0f0", margin: "4px 0 0", fontStyle: "italic", textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>{plant.botanical}</p>
+                <h2 style={{ fontFamily: "DM Serif Display", fontSize: 28, color: "#fff", margin: 0, textShadow: "0 2px 12px rgba(0,0,0,0.6)" }}>{plant.name}</h2>
+                <p style={{ fontFamily: "DM Sans", fontSize: 13, color: "#f0f0f0", margin: "4px 0 0", fontStyle: "italic", textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}>{plant.botanical}</p>
               </div>
             </div>
           </div>
+
+          {/* Decorative circles */}
+          <div style={{
+            position: "absolute",
+            top: -50,
+            right: -50,
+            width: 200,
+            height: 200,
+            borderRadius: "50%",
+            background: `radial-gradient(circle, ${plant.color}22 0%, transparent 70%)`,
+            pointerEvents: "none"
+          }} />
+          <div style={{
+            position: "absolute",
+            bottom: -30,
+            left: -30,
+            width: 150,
+            height: 150,
+            borderRadius: "50%",
+            background: `radial-gradient(circle, ${plant.color}33 0%, transparent 70%)`,
+            pointerEvents: "none"
+          }} />
+
           <button onClick={onClose} style={{
             position: "absolute", top: 16, right: 16,
-            background: "rgba(255, 255, 255, 0.9)", border: "none",
+            background: "rgba(255, 255, 255, 0.95)", border: "none",
             color: "#666", fontSize: 24, cursor: "pointer", lineHeight: 1, fontWeight: 300,
             width: 36, height: 36, borderRadius: "50%",
             display: "flex", alignItems: "center", justifyContent: "center",
             backdropFilter: "blur(10px)",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.2)"
-          }}>×</button>
+            boxShadow: "0 2px 12px rgba(0,0,0,0.3)",
+            transition: "all 0.2s"
+          }}
+          onMouseEnter={(e) => e.target.style.background = "rgba(255, 255, 255, 1)"}
+          onMouseLeave={(e) => e.target.style.background = "rgba(255, 255, 255, 0.95)"}
+          >×</button>
         </div>
 
         <div style={{ padding: 32 }}>
