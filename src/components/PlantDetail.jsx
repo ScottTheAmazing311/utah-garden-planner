@@ -1,4 +1,5 @@
 import { MONTHS, SUN_ICONS, WATER_ICONS, CATEGORY_ICONS } from '../data/plants';
+import { getPlantImage } from '../data/plantImages';
 import PlantCalendar from './PlantCalendar';
 
 const detailTag = { fontFamily: "DM Sans", fontSize: 12, fontWeight: 500, padding: "5px 12px", borderRadius: 20 };
@@ -22,73 +23,50 @@ export default function PlantDetail({ plant, onClose, onAdd, onRemove, isInGarde
         boxShadow: "0 8px 32px rgba(0,0,0,0.12)"
       }}>
 
-        {/* Plant Image Header with Gradient */}
+        {/* Plant Image Header */}
         <div className="detail-image-header" style={{
           position: "relative",
           width: "100%",
           height: 280,
           overflow: "hidden",
           borderRadius: "16px 16px 0 0",
-          background: `linear-gradient(135deg, ${plant.color}33 0%, ${plant.color}66 50%, ${plant.color}99 100%)`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
+          background: `linear-gradient(135deg, ${plant.color}33 0%, ${plant.color}66 100%)`
         }}>
-          {/* Large decorative emoji */}
-          <div style={{
-            fontSize: 180,
-            opacity: 0.15,
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%) rotate(-15deg)",
-            userSelect: "none",
-            pointerEvents: "none"
-          }}>
-            {CATEGORY_ICONS[plant.category] || "🌸"}
-          </div>
+          {/* Plant Photo */}
+          <img
+            src={getPlantImage(plant)}
+            alt={plant.name}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center"
+            }}
+            onError={(e) => {
+              // Fallback to gradient if image fails to load
+              e.target.style.display = "none";
+            }}
+          />
 
-          {/* Overlay content */}
+          {/* Dark overlay for text readability */}
           <div style={{
             position: "absolute",
             bottom: 0,
             left: 0,
             right: 0,
-            background: "linear-gradient(to top, rgba(0,0,0,0.6), transparent)",
+            background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)",
             padding: "60px 24px 20px"
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <div style={{ fontSize: 52, lineHeight: 1, filter: "drop-shadow(0 3px 6px rgba(0,0,0,0.4))" }}>
+              <div style={{ fontSize: 52, lineHeight: 1, filter: "drop-shadow(0 3px 8px rgba(0,0,0,0.6))" }}>
                 {CATEGORY_ICONS[plant.category] || "🌸"}
               </div>
               <div>
-                <h2 style={{ fontFamily: "DM Serif Display", fontSize: 28, color: "#fff", margin: 0, textShadow: "0 2px 12px rgba(0,0,0,0.6)" }}>{plant.name}</h2>
-                <p style={{ fontFamily: "DM Sans", fontSize: 13, color: "#f0f0f0", margin: "4px 0 0", fontStyle: "italic", textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}>{plant.botanical}</p>
+                <h2 style={{ fontFamily: "DM Serif Display", fontSize: 28, color: "#fff", margin: 0, textShadow: "0 2px 12px rgba(0,0,0,0.8)" }}>{plant.name}</h2>
+                <p style={{ fontFamily: "DM Sans", fontSize: 13, color: "#f0f0f0", margin: "4px 0 0", fontStyle: "italic", textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}>{plant.botanical}</p>
               </div>
             </div>
           </div>
-
-          {/* Decorative circles */}
-          <div style={{
-            position: "absolute",
-            top: -50,
-            right: -50,
-            width: 200,
-            height: 200,
-            borderRadius: "50%",
-            background: `radial-gradient(circle, ${plant.color}22 0%, transparent 70%)`,
-            pointerEvents: "none"
-          }} />
-          <div style={{
-            position: "absolute",
-            bottom: -30,
-            left: -30,
-            width: 150,
-            height: 150,
-            borderRadius: "50%",
-            background: `radial-gradient(circle, ${plant.color}33 0%, transparent 70%)`,
-            pointerEvents: "none"
-          }} />
 
           <button onClick={onClose} style={{
             position: "absolute", top: 16, right: 16,
